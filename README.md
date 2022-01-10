@@ -2,6 +2,7 @@
 Jogo Campo Minado criado a partir do python para a Avaliação de Computação II
 
 Aluno: Lucas Borges Menezes
+
 DRE: 121069612
 
 Professor: Gabriel Cardoso de Carvalho
