@@ -17,10 +17,4 @@ Esse programa consiste no jogo Campo Minado.
 "Opcionalmente, o jogador pode marcar qualquer quadrado que acredita que contém uma mina."
 Fonte : https://pt.wikipedia.org/wiki/Campo_minado
 
-A partir dessa descrição breve do jogo, algumas opções podem ser escolhidas pelo usuário:
-- Tamanho do campo (padrão 10)
-- Número de bombas no campo (padrão 10)
-
-O campo é composto por uma matriz com n linhas e n colunas, sendo o valor n igual ao tamanho do campo.~\
-
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
