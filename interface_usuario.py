@@ -1,8 +1,9 @@
+from ferramentas import Ferramentas
 import os
 os.system("color")
 
 
-class InterfaceUsuario:
+class InterfaceUsuario(Ferramentas):
     """
     Esta super classe inclui todos os métodos e atributos que são úteis para qualquer
     interface que pode ser feita com o usuário.
@@ -25,7 +26,7 @@ class InterfaceUsuario:
         Adaptado de https://www.codegrepper.com/code-examples/python/python+ansi+colors
         Acesso em 02/01/2022
 
-        Entrada: Nenhuma
+        Entrada: objeto da classe InterfaceUsuario
 
         Saída: Nenhuma
         """
@@ -45,8 +46,8 @@ class InterfaceUsuario:
         """
         Retorna a string 'text' na cor setada por 'color' e 'is_bold'.
 
-        Entrada: str, str, bool, o primeiro representa o texto, o segundo a cor em inglês e o terceiro se o texto que
-        se deseja escrever será em negrito ou não
+        Entrada: objeto da classe InterfaceUsuario, str, str, bool, o primeiro representa o texto, o segundo a cor em
+        inglês e o terceiro se o texto que se deseja escrever será em negrito ou não
 
         Saída: str, com as características desejadas
         """
@@ -72,8 +73,8 @@ class InterfaceUsuario:
         """
         Printa na tela a string 'text' na cor setada por 'color' e 'is_bold'.
 
-        Entrada: str, str, bool, o primeiro representa o texto, o segundo a cor em inglês e o terceiro se o texto que
-        se deseja imprimir será em negrito ou não
+        Entrada: objeto da classe InterfaceUsuario, str, str, bool, o primeiro representa o texto, o segundo a cor em
+        inglês e o terceiro se o texto que se deseja imprimir será em negrito ou não
 
         Saída: Nenhuma
         """
@@ -98,7 +99,7 @@ class InterfaceUsuario:
     @staticmethod
     def getAtributos():
         """
-        Esta função estática (chamada sempre através de Tela.getAtributos()) retorna um
+        Esta função estática (chamada sempre através de InterfaceUsuario.getAtributos()) retorna um
         conjunto com os nomes dos atributos desta classe.
 
         (None) -> set
@@ -108,7 +109,7 @@ class InterfaceUsuario:
     @staticmethod
     def getMetodos():
         """
-        Esta função estática (chamada sempre através de Tela.getMetodos()) retorna um
+        Esta função estática (chamada sempre através de InterfaceUsuario.getMetodos()) retorna um
         conjunto com os nomes dos métodos desta classe.
 
         (None) -> set

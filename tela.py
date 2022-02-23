@@ -1,5 +1,6 @@
 from interface_usuario import *
 from ferramentas import *
+from datetime import datetime
 
 
 class Tela(InterfaceUsuario):
@@ -9,28 +10,27 @@ class Tela(InterfaceUsuario):
     """
 
     __atributos = {"titulo", "opcoes"}
-    __metodos = {"__init__", "__str__", "menu_inicial", "menu_de_pause", "menu_save_load", "menu_opcoes",
-                 "menu_estatisticas", "pinta_campo", "tela_vitoria", "tela_derrota", "desenha_tela",
-                 "getOpcaoEscolhida", "getManual", 'getAtributos', 'getMetodos'}
+    __metodos = {"__init__", "__str__", "desenha_tela", "getOpcaoEscolhida", "getManual", 'getAtributos', 'getMetodos'}
 
-    def __init__(self, titulo, opcoes):
+    def __init__(self, titulo, opcoes, hist):
         """
         Inicializador da classe, definindo o titulo e as opcoes
 
-        Entrada: str, iter, o primeiro representando o nome da tela que será apresentada e o segundo um iterável com
-        todas as opções que serão disponibilizadas
+        Entrada: objeto da classe Tela, str, iter, o primeiro representando o nome da tela que será apresentada e o
+        segundo um iterável com todas as opções que serão disponibilizadas
 
         Saída: Nenhuma
         """
         InterfaceUsuario().__init__()
         self.titulo = titulo
         self.opcoes = opcoes
+        self.hist = hist
 
     def __str__(self):
         """
         Esse método é responsável pela representação em string.
 
-        Entrada: Nenhuma
+        Entrada: objeto da classe Tela
 
         Saída: str, representando o que será enviado para a tela
         """
@@ -40,16 +40,17 @@ class Tela(InterfaceUsuario):
             tela_str += f"{opcao}\n"
         return tela_str
 
-    def desenha_tela(self):
+    def desenha_tela(self, limpa=True):
         """
         Esta função atualiza a tela no console após ocorrer alguma modificação,
         limpando a tela e em seguida printando sua versão em string.
 
-        Entrada: Nenhuma
+        Entrada: objeto da classe Tela
 
         Saída: Nenhuma
         """
-        Ferramentas.limpaTela()
+        if limpa:
+            Ferramentas.limpaTela()
         print(self)
 
     def getOpcaoEscolhida(self):
@@ -57,7 +58,7 @@ class Tela(InterfaceUsuario):
         Esta função lê a opção escolhida pelo usuário a partir do console e retorna
         a escolha.
 
-        Entrada: Nenhuma
+        Entrada: objeto da classe Tela
 
         Saída: int, representando a opção escolhida na tela pelo usuário
         """
@@ -67,9 +68,19 @@ class Tela(InterfaceUsuario):
                 if escolha in range(len(self.opcoes) + 1):
                     return escolha
                 else:
-                    print("Esse número não pertence a nenhuma das opções")
+                    raise CommandError
             except ValueError:
-                print("Digite o número entre parênses da opção desejada")
+                self.hist.armazena_log(f"{datetime.today()}\n"
+                                       f"        ValueError"
+                                       f"        Digite o número entre parênses da opção desejada."
+                                       f"        O usuário foi perguntado novamente sobre sua escolha")
+                print("Digite o número entre parênses da opção desejada.")
+            except CommandError:
+                self.hist.armazena_log(f"{datetime.today()}\n"
+                                       f"        CommandError"
+                                       f"        O comando digitado não faz parte das opções disponíveis."
+                                       f"        O usuário foi perguntado novamente sobre sua escolha")
+                print("O comando digitado não faz parte das opções disponíveis.")
 
     @staticmethod
     def getAtributos():
@@ -110,3 +121,7 @@ class Tela(InterfaceUsuario):
         manual["titulo"] = "# Representa o título da tela"
         manual["opcoes"] = "# Representa a lista de opções do usuário"
         return manual
+
+
+class CommandError(Exception):
+    pass

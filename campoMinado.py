@@ -26,11 +26,24 @@ __email__ = "lucasborgesm@poli.ufrj.br"
 __status__ = "Production"
 
 
+from estatisticas import Estatisticas
 from interface_usuario import *
 from ferramentas import *
+from menu_pause import MenuPause
 from tela import *
 from jogador import *
 from campo import *
+from menu_inicial import *
+from opcoes import *
+from historico import *
+from interface_campo import *
+from dificuldade import *
+from confirma_novo_jogo import *
+from save import *
+from jogada import *
+from menu_pause import *
+from load import *
+from estatisticas import *
 
 
 class CampoMinado:
@@ -39,10 +52,12 @@ class CampoMinado:
     são conectadas garantindo o funcionamento das mecânicas do jogo, bem como criando métodos para isso.
     """
 
-    __atributos = {"tamanho", "n_bombas"}
-    __metodos = {"__init__", "__str__", "jogada", "verifica_situacao", "getAtributos", "getMetodos", "getManual"}
+    __atributos = {}
+    __metodos = {"__init__", "__str__", "jogo", "jogada", "verifica_situacao", "calcula_tempo", "menu_inicial",
+                 "novo_jogo", "carrega_jogo", "opcoes", "estatisticas", "redireciona_menu_inicial", "getAtributos",
+                 "getMetodos", "getManual"}
 
-    def __init__(self, tamanho=10, n_bombas=10):
+    def __init__(self):
         """
         Esse método inicia um novo jogo a partir das duas configurações de tamanho do campo e número de bombas
 
@@ -115,23 +130,93 @@ class CampoMinado:
 
         return saida
 
-    def jogada(self, jogador, pos_ij, abrir=True):
+    def jogo(self, campo, jogador, estatisticas, hist, save, jogo_salvo=False, pos_casas_abertas=[],
+             pos_casas_marcadas=[]):
         """
-        Esse método realiza uma jogada, abrindo ou marcando uma casa, e caso seja aberta, contabilizando a jogada para
-        os dados do jogador daquela partida.
-        """
-        pass
+        Método responsável por realizar o funcionamento principal do jogo
 
-    def verifica_situacao(self):
+        Entrada: objeto da classe CampoMinado, objeto da classe Campo, objeto da classe Jogador,
+        objeto da classe Estatistica, objeto da classe Historico, objeto da classe Save, bool (representando se o jogo
+        jogado no exato momento já tinha sido salvo ou não, por padrão False), list (contendo todas as casas que foram
+        abertas em um jogo salvo, por padrão []), list (contendo todas as casas que foram marcadas em um jogo salvo, por
+        padrão [])
+
+        Saída: Nenhuma
+        """
+        interface_campo = InterfaceCampo(campo, hist)
+        jogada = Jogada(hist)
+        menu_pause = MenuPause(hist)
+        if jogo_salvo:
+            for i, j in pos_casas_abertas:
+                campo.abre_casa(i, j)
+            for i, j in pos_casas_marcadas:
+                campo.marca_casa(i, j)
+        interface_campo.mostra_campo()
+        while True:
+            sair = self.jogada(campo, jogador, interface_campo, jogada, menu_pause, hist, save)
+            if sair:
+                menu_pause.mensagem_de_saida()
+                break
+            else:
+                situacao = self.verifica_situacao(campo, hist)
+                interface_campo.mostra_campo()
+                if situacao == "derrota":
+                    interface_campo.derrota()
+                    # estatisticas.salva_estatisticas()
+                    save.apaga_save()
+                    break
+                if situacao == "vitoria":
+                    interface_campo.vitoria()
+                    # estatisticas.salva_estatisticas()
+                    save.apaga_save()
+                    break
+
+    def jogada(self, campo, jogador, interface_campo, jogada, menu_pause, hist, save):
+        """
+        Esse método realiza uma jogada, abrindo ou marcando uma casa, contabilizando a jogada para
+        os dados do jogador daquela partida, para o histórico e para o save.
+
+        Entrada: objeto da classe CampoMinado, objeto da classe Jogador, objeto da classe InterfaceCampo, objeto da
+        classe Jogada, objeto da classe MenuPause, objeto da classe Historico, objeto da classe Save
+
+        Saída: bool, representando se o usuário deseja sair do jogo ou não
+        """
+        opcoes = {1: campo.abre_casa, 2: campo.marca_casa}
+        jogada.desenha_tela(False)
+        escolha = jogada.getOpcaoEscolhida()
+        sair = False
+        if escolha != 3:
+            i, j = interface_campo.pergunta_posicao()
+            jogador.aumenta_jogadas(1)
+            hist.armazena_jogada_hist("j", i, j)
+            if escolha == 1:
+                save.salva_jogada("a", i, j)
+                jogador.aumenta_abertas(1)
+            else:
+                hist.armazena_jogada_hist("m", i, j)
+                save.salva_jogada("m", i, j)
+                jogador.aumenta_marcadas(1)
+            save.salva_jogador(jogador)
+            opcoes[escolha](i, j)
+        else:
+            menu_pause.desenha_tela()
+            if menu_pause.getOpcaoEscolhida() == 2:
+                sair = True
+        return sair
+
+    def verifica_situacao(self, campo, hist):
         """
         Verifica se o jogo foi terminado em vitória, retornando True, em derrota, retornando False, ou se ainda está
         acontecendo, retornando None.
 
-        Entrada: Nenhuma
+        Entrada: objeto da classe CampoMinado, objeto da classe Campo, objeto da classe Historico
 
         Saída: bool, representando a situação da partida atual
         """
-        pass
+        situacao = campo.verifica_derrota()
+        if situacao == "":
+            situacao = campo.verifica_vitoria()
+        return situacao
 
     def calcula_tempo(self):
         """
@@ -142,6 +227,116 @@ class CampoMinado:
         Saída: Tempo total da partida atual
         """
         pass
+
+    def menu_inicial(self, estatisticas, hist):
+        """
+        Método responsável por mostrar o menu inicial, tratar as interações com o usuário e redirecionar para o que for
+        decidido
+
+        Entrada: objeto da classe CampoMinado, objeto da classe Estatistica, objeto da classe Historico
+
+        Saída: Nenhuma
+        """
+        menu_inicial = MenuInicial(hist)
+        menu_inicial.desenha_tela()
+        escolha = menu_inicial.getOpcaoEscolhida()
+        self.redireciona_menu_inicial(escolha, estatisticas, hist)
+
+    def novo_jogo(self, estatisticas, hist):
+        """
+        Método responsável por criar um novo jogo, criando todos os objetos de classe necessários, também perguntando se
+        o usuário tem certeza que deseja criar um novo jogo, já que isso resultará em apagar seu save anterior
+
+        Entrada: objeto da classe CampoMinado, objeto da classe Estatistica, objeto da classe Historico
+
+        Saída: Nenhuma
+        """
+        confirma_novo_jogo = ConfirmaNovoJogo(hist)
+        confirma_novo_jogo.desenha_tela()
+        continua = confirma_novo_jogo.getOpcaoEscolhida()
+        confirma_novo_jogo.limpaTela()
+        if continua == 1:
+            hist.reinicia_historico()
+            save = Save(hist, False)
+            jogador = Jogador()
+            jogador.setNome()
+            hist.armazena_nome_jogador(jogador)
+            menu_dificuldades = Dificuldade(hist)
+            menu_dificuldades.desenha_tela()
+            escolha = menu_dificuldades.getOpcaoEscolhida()
+            tamanho, n_bombas = menu_dificuldades.interpreta_dificuldade(escolha)
+            campo = Campo(tamanho, n_bombas, hist)
+            save.salva_novo_jogo(campo)
+            save.salva_jogador(jogador)
+            Ferramentas.limpaTela()
+            self.jogo(campo, jogador, estatisticas, hist, save)
+        else:
+            self.menu_inicial(hist)
+
+    def carrega_jogo(self, estatisticas, hist):
+        """
+        Esse método carrega um jogo salvo anteriormente, criando todos os objetos de classe necessários e redirecionando
+        para o jogo
+
+        Entrada: objeto da classe CampoMinado, objeto da casse Estatistica, objeto da classe Historico
+
+        Saída: Nenhuma
+        """
+        load = Load(hist)
+        carregado = load.carrega_campo_inicial()
+        if carregado:
+            tamanho, n_bombas, campo = carregado
+            nick, jogadas, casas_abertas, casas_abertas_total, casas_marcadas = load.carrega_jogador()
+            jogador = Jogador(nick, jogadas, casas_abertas, casas_abertas_total, casas_marcadas)
+            campo = Campo(tamanho, n_bombas, hist, campo)
+            pos_casas_abertas, pos_casas_marcadas = load.carrega_casas_abertas_e_marcadas(load.carrega_jogadas())
+            save = Save(hist)
+            self.jogo(campo, jogador, estatisticas, hist, save, True, pos_casas_abertas, pos_casas_marcadas=pos_casas_marcadas)
+        else:
+            self.menu_inicial(estatisticas, hist)
+
+    def opcoes(self, estatisticas, hist):
+        """
+        Esse método é reponsável por todo o menu de opções, tratando a interação com o usuário e redirecionando para o
+        que for necessário
+
+        Entrada: objeto da classe CampoMinado, objeto da classe Estatistica, objeto da casse Historico
+
+        Saída: Nenhuma
+        """
+        menu_opcoes = Opcoes(hist)
+        menu_opcoes.desenha_tela()
+        escolha = menu_opcoes.getOpcaoEscolhida()
+
+    def estatisticas(self, estatisticas, hist):
+        """
+        Método responsável por todo o menu de estatisticas, tratando a interação com o usuário e redirecionando para o
+        que for necessário
+
+        Entrada: objeto da classe CampoMinado, objeto da classe Estatistica, objeto da classe Historico
+        """
+        opcoes = {1: estatisticas.grafico_abertas_jogadas, 2: estatisticas.grafico_marcadas_jogadas, 3: estatisticas.grafico_abertas_marcadas, 4: self.menu_inicial}
+        while True:
+            estatisticas.desenha_tela()
+            escolha = estatisticas.getOpcaoEscolhida()
+            if escolha != 4:
+                opcoes[escolha]()
+            else:
+                opcoes[escolha](estatisticas, hist)
+
+    def redireciona_menu_inicial(self, escolha, estatisticas, hist):
+        """
+        Método responsável por redirecionar o usuário após escolher uma das opções do menu para qualquer opção
+        selecionada
+
+        Entrada: objeto da classe CampoMinado, int (representando a escolha), objeto da classe Estatistica, objeto da
+        classe Historico
+        """
+        opcoes = {1: self.novo_jogo, 2: self.carrega_jogo, 3: self.opcoes, 4: self, 5: self.estatisticas}
+        if escolha != 4:
+            opcoes[escolha](estatisticas, hist)
+        else:
+            print(opcoes[escolha])
 
     @staticmethod
     def getAtributos():
@@ -174,27 +369,27 @@ class CampoMinado:
         manual = dict()
         manual["__init__"] = CampoMinado.__init__.__doc__
         manual["__str__"] = CampoMinado.__str__.__doc__
+        manual["jogo"] = CampoMinado.jogo.__doc__
         manual["jogada"] = CampoMinado.jogada.__doc__
         manual["verifica_situacao"] = CampoMinado.verifica_situacao.__doc__
         manual["calcula_tempo"] = CampoMinado.calcula_tempo.__doc__
+        manual["menu_inicial"] = CampoMinado.menu_inicial.__doc__
+        manual["novo_jogo"] = CampoMinado.novo_jogo.__doc__
+        manual["carrega_jogo"] = CampoMinado.carrega_jogo.__doc__
+        manual["opcoes"] = CampoMinado.opcoes.__doc__
+        manual["estatisticas"] = CampoMinado.estatisticas.__doc__
+        manual["redireciona_menu_inicial"] = CampoMinado.redireciona_menu_inicial.__doc__
         manual["getManual"] = CampoMinado.getManual.__doc__
         manual["getAtributos"] = CampoMinado.getAtributos.__doc__
         manual["getMetodos"] = CampoMinado.getMetodos.__doc__
-        manual["tamanho"] = "# Representa o tamanho do campo do jogo"
-        manual["n_bombas"] = "# Representa o número de bombas do jogo"
         return manual
 
 
 def main():
     jogo = CampoMinado()
-    menu_inicial = Tela("Bem Vindo ao Campo Minado", ("(1) Novo Jogo", "(2) Carregar Jogo", "(3) Opções",
-                        "(4) Manual do Desenvolvedor", "(5) Estatísticas"))
-    menu_inicial.desenha_tela()
-    escolha = menu_inicial.getOpcaoEscolhida()
-    if escolha == 4:
-        print(jogo)
-    else:
-        print("Essa parte do jogo não está concluída")
+    hist = Historico()
+    estatisticas = Estatisticas(hist)
+    jogo.menu_inicial(estatisticas, hist)
 
 
 if __name__ == "__main__":
