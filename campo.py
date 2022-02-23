@@ -7,7 +7,7 @@ class Campo:
     diretamente com o que acontece no campo.
     """
 
-    __atributos = {"hist", "tamanho", "n_bombas", "fechada", "bomba", "marcador", "campo", "mascara"}
+    __atributos = {"hist", "tamanho", "n_bombas", "fechada", "bomba", "marcador", "campo", "mascara", "n_casas_abertas"}
     __metodos = {"__init__", "__str__", "abre_casa", "marca_casa", "getAtributos", "getMetodos", "getManual"}
 
     def __init__(self, tamanho, n_bombas, hist, campo=None):
@@ -28,6 +28,7 @@ class Campo:
         self.fechada = "\u25A1"
         self.bomba = "b"
         self.marcador = "\u2705"
+        self.n_casas_abertas = 0
         if campo == None:
             self.campo = CriadorDeCampo().cria_campo(self.tamanho, self.n_bombas, self.bomba)
         else:

@@ -33,7 +33,7 @@ class Dificuldade(Tela):
 
         Saída: tuple, representando o tamanho e o número de bombas do campo
         """
-        opcoes = {1: (4,2), 2: (15, 40), 3: (22, 99)}
+        opcoes = {1: (10,10), 2: (15, 40), 3: (22, 99)}
         return opcoes[escolha]
 
     @staticmethod
