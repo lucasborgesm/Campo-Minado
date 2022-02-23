@@ -71,16 +71,16 @@ class Tela(InterfaceUsuario):
                     raise CommandError
             except ValueError:
                 self.hist.armazena_log(f"{datetime.today()}\n"
-                                       f"        ValueError"
-                                       f"        Digite o número entre parênses da opção desejada."
-                                       f"        O usuário foi perguntado novamente sobre sua escolha")
-                print("Digite o número entre parênses da opção desejada.")
+                                       f"        ValueError\n"
+                                       f"        Digite o número entre parênses da opção desejada.\n"
+                                       f"        O usuário foi perguntado novamente sobre sua escolha\n")
+                print("Digite o número entre parênses da opção desejada.\n")
             except CommandError:
                 self.hist.armazena_log(f"{datetime.today()}\n"
-                                       f"        CommandError"
-                                       f"        O comando digitado não faz parte das opções disponíveis."
-                                       f"        O usuário foi perguntado novamente sobre sua escolha")
-                print("O comando digitado não faz parte das opções disponíveis.")
+                                       f"        CommandError\n"
+                                       f"        O comando digitado não faz parte das opções disponíveis.\n"
+                                       f"        O usuário foi perguntado novamente sobre sua escolha\n")
+                print("O comando digitado não faz parte das opções disponíveis.\n")
 
     @staticmethod
     def getAtributos():

@@ -111,14 +111,14 @@ class Save:
         (None) -> dict
         """
         manual = dict()
-        manual["__init__"] = Opcoes.__init__.__doc__
-        manual["salva_novo_jogo"] = Opcoes.salva_novo_jogo.__doc__
-        manual["salva_jogada"] = Opcoes.salva_jogada.__doc__
-        manual["salva_jogador"] = Opcoes.salva_jogador.__doc__
-        manual["apaga_save"] = Opcoes.apaga_save.__doc__
-        manual["getManual"] = Opcoes.getManual.__doc__
-        manual["getAtributos"] = Opcoes.getAtributos.__doc__
-        manual["getMetodos"] = Opcoes.getMetodos.__doc__
+        manual["__init__"] = Save.__init__.__doc__
+        manual["salva_novo_jogo"] = Save.salva_novo_jogo.__doc__
+        manual["salva_jogada"] = Save.salva_jogada.__doc__
+        manual["salva_jogador"] = Save.salva_jogador.__doc__
+        manual["apaga_save"] = Save.apaga_save.__doc__
+        manual["getManual"] = Save.getManual.__doc__
+        manual["getAtributos"] = Save.getAtributos.__doc__
+        manual["getMetodos"] = Save.getMetodos.__doc__
         manual["hist"] = "# Representa o historico"
         manual["save"] = "# Representa o save"
         manual["posicao_tamanho"] = "# Representa a posicao da linha que está salva o tamanho do campo"

@@ -1,3 +1,7 @@
+from datetime import datetime
+from logging import exception
+
+
 class Historico:
     """
     Esta classe representa o histórico de ações que o usuário fez, guardando todas sua jogadas, como casas abertas e
@@ -89,23 +93,42 @@ class Historico:
 
         Saída: tuple, contendo as informações das jogadas, das casas abertas e das casas marcadas
         """
-        arquivo = open(self.hist)
-        linhas = arquivo.readlines()
-        jogadas = linhas[1:]
-        qtd_casas_abertas = 0
-        total_qtd_casas_abertas = []
-        qtd_casas_marcadas = 0
-        total_qtd_casas_marcadas = []
-        n_jogadas = 0
-        for jogada in jogadas:
-            if jogada[0] == "a":
-                qtd_casas_abertas += 1
-            elif jogada[0] == "m":
-                qtd_casas_marcadas += 1
-            total_qtd_casas_abertas.append(qtd_casas_abertas)
-            total_qtd_casas_marcadas.append(qtd_casas_marcadas)
-            n_jogadas += 1
-        return n_jogadas, qtd_casas_abertas, total_qtd_casas_abertas, qtd_casas_marcadas, total_qtd_casas_marcadas
+        try:
+            arquivo = open(self.hist)
+            linhas = arquivo.readlines()
+            n_linhas = sum(linhas)
+            if n_linhas == 0:
+                raise ArquivoVazio
+            jogadas = linhas[1:]
+            qtd_casas_abertas = 0
+            total_qtd_casas_abertas = []
+            qtd_casas_marcadas = 0
+            total_qtd_casas_marcadas = []
+            n_jogadas = 0
+            for jogada in jogadas:
+                if jogada[0] == "a":
+                    qtd_casas_abertas += 1
+                elif jogada[0] == "m":
+                    qtd_casas_marcadas += 1
+                total_qtd_casas_abertas.append(qtd_casas_abertas)
+                total_qtd_casas_marcadas.append(qtd_casas_marcadas)
+                n_jogadas += 1
+            return n_jogadas, qtd_casas_abertas, total_qtd_casas_abertas, qtd_casas_marcadas, total_qtd_casas_marcadas
+        except FileNotFoundError:
+            self.armazena_log(f"{datetime.today()}\n"
+                                   f"        FileNotFoundError\n"
+                                   f"        Não houve nenhum jogo anterior para ver as estatíticas.\n"
+                                   f"        O usuário foi levado novamente ao menu_principal\n")
+            print("Não houve nenhum jogo anterior para ver as estatíticas.\n")
+            input("Pressione enter para continuar\n")
+        except ArquivoVazio:
+            self.armazena_log(f"{datetime.today()}\n"
+                                   f"        FileNotFoundError"
+                                   f"        Não houve nenhum jogo anterior para ver as estatíticas.\n"
+                                   f"        O usuário foi levado novamente ao menu_principal\n")
+            print("Não houve nenhum jogo anterior para ver as estatíticas.\n")
+            input("Pressione enter para continuar\n")
+        return False
 
     @staticmethod
     def getAtributos():
@@ -137,15 +160,22 @@ class Historico:
         """
         manual = dict()
         manual["__init__"] = Historico.__init__.__doc__
-        anual["reinicia_historico"] = Historico.reinicia_historico.__doc__
-        anual["armazena_nome_jogador"] = Historico.armazena_nome_jogador.__doc__
-        anual["armazena_jogada_hist"] = Historico.armazena_jogada_hist.__doc__
-        anual["armazena_log"] = Historico.armazena_log.__doc__
-        anual["retorna_nome"] = Historico.retorna_nome.__doc__
-        anual["retorna_jogadas"] = Historico.retorna_jogadas.__doc__
+        manual["reinicia_historico"] = Historico.reinicia_historico.__doc__
+        manual["armazena_nome_jogador"] = Historico.armazena_nome_jogador.__doc__
+        manual["armazena_jogada_hist"] = Historico.armazena_jogada_hist.__doc__
+        manual["armazena_log"] = Historico.armazena_log.__doc__
+        manual["retorna_nome"] = Historico.retorna_nome.__doc__
+        manual["retorna_jogadas"] = Historico.retorna_jogadas.__doc__
         manual["getManual"] = Historico.getManual.__doc__
         manual["getAtributos"] = Historico.getAtributos.__doc__
         manual["getMetodos"] = Historico.getMetodos.__doc__
         manual["hist"] = "# Representa o historico"
         manual["log"] = "# Representa o log"
         return manual
+    
+
+class ArquivoVazio(Exception):
+    """
+    Erro para quando o arquivo passado estiver vazio
+    """
+    pass

@@ -26,10 +26,10 @@ __email__ = "lucasborgesm@poli.ufrj.br"
 __status__ = "Production"
 
 
-from estatisticas import Estatisticas
+from estatisticas import *
 from interface_usuario import *
 from ferramentas import *
-from menu_pause import MenuPause
+from menu_pause import *
 from tela import *
 from jogador import *
 from campo import *
@@ -41,9 +41,26 @@ from dificuldade import *
 from confirma_novo_jogo import *
 from save import *
 from jogada import *
-from menu_pause import *
 from load import *
-from estatisticas import *
+
+# from estatisticas import Estatisticas
+# from interface_usuario import *
+# from ferramentas import *
+# from menu_pause import MenuPause
+# from tela import *
+# from jogador import *
+# from campo import *
+# from menu_inicial import *
+# from opcoes import *
+# from historico import *
+# from interface_campo import *
+# from dificuldade import *
+# from confirma_novo_jogo import *
+# from save import *
+# from jogada import *
+# from menu_pause import *
+# from load import *
+# from estatisticas import *
 
 
 class CampoMinado:
@@ -93,11 +110,95 @@ class CampoMinado:
             saida += f"{chave} : {manual_tela[chave]}\n"
         saida += "\n"
 
+        # Manual da classe Estatisticas
+        manual_estatisticas = Estatisticas.getManual()
+        saida += 'MANUAL DA CLASSE ESTATISTICAS\n'
+        for chave in manual_estatisticas:
+            saida += f"{chave} : {manual_estatisticas[chave]}\n"
+        saida += "\n"
+
+        # Manual da classe InterfaceUsuario
+        manual_interface_usuario = InterfaceUsuario.getManual()
+        saida += 'MANUAL DA CLASSE INTERFACEUSUARIO\n'
+        for chave in manual_interface_usuario:
+            saida += f"{chave} : {manual_interface_usuario[chave]}\n"
+        saida += "\n"
+
+        # Manual da classe InterfaceCampo
+        manual_interface_campo = InterfaceCampo.getManual()
+        saida += 'MANUAL DA CLASSE INTERFACECAMPO\n'
+        for chave in manual_interface_campo:
+            saida += f"{chave} : {manual_interface_campo[chave]}\n"
+        saida += "\n"
+
+        # Manual da classe MenuPause
+        manual_menu_pause = MenuPause.getManual()
+        saida += 'MANUAL DA CLASSE MENUPAUSE\n'
+        for chave in manual_menu_pause:
+            saida += f"{chave} : {manual_menu_pause[chave]}\n"
+        saida += "\n"
+
+        # Manual da classe MenuInicial
+        manual_menu_inicial = MenuInicial.getManual()
+        saida += 'MANUAL DA CLASSE MENUINICIAL\n'
+        for chave in manual_menu_inicial:
+            saida += f"{chave} : {manual_menu_inicial[chave]}\n"
+        saida += "\n"
+
+        # Manual da classe Opcoes
+        manual_opcoes = Opcoes.getManual()
+        saida += 'MANUAL DA CLASSE OPCOES\n'
+        for chave in manual_opcoes:
+            saida += f"{chave} : {manual_opcoes[chave]}\n"
+        saida += "\n"
+
+        # Manual da classe Dificuldade
+        manual_dificuldade = Dificuldade.getManual()
+        saida += 'MANUAL DA CLASSE DIFICULDADE\n'
+        for chave in manual_dificuldade:
+            saida += f"{chave} : {manual_dificuldade[chave]}\n"
+        saida += "\n"
+
+        # Manual da classe ConfirmaNovoJogo
+        manual_confirma_novo_jogo = ConfirmaNovoJogo.getManual()
+        saida += 'MANUAL DA CLASSE CONFIRMANOVOJOGO\n'
+        for chave in manual_confirma_novo_jogo:
+            saida += f"{chave} : {manual_confirma_novo_jogo[chave]}\n"
+        saida += "\n"
+
+        # Manual da classe Jogada
+        manual_jogada = Jogada.getManual()
+        saida += 'MANUAL DA CLASSE JOGADA\n'
+        for chave in manual_jogada:
+            saida += f"{chave} : {manual_jogada[chave]}\n"
+        saida += "\n"
+
         # Manual da classe Jogador
         manual_jogador = Jogador.getManual()
         saida += 'MANUAL DA CLASSE JOGADOR\n'
         for chave in manual_jogador:
             saida += f"{chave} : {manual_jogador[chave]}\n"
+        saida += "\n"
+
+        # Manual da classe Save
+        manual_save = Save.getManual()
+        saida += 'MANUAL DA CLASSE SAVE\n'
+        for chave in manual_save:
+            saida += f"{chave} : {manual_save[chave]}\n"
+        saida += "\n"
+
+        # Manual da classe Load
+        manual_load = Load.getManual()
+        saida += 'MANUAL DA CLASSE SAVE\n'
+        for chave in manual_save:
+            saida += f"{chave} : {manual_save[chave]}\n"
+        saida += "\n"
+
+        # Manual da classe Historico
+        manual_historico = Historico.getManual()
+        saida += 'MANUAL DA CLASSE HISTORICO\n'
+        for chave in manual_historico:
+            saida += f"{chave} : {manual_historico[chave]}\n"
         saida += "\n"
 
         # Manual da classe Campo
@@ -320,7 +421,9 @@ class CampoMinado:
             estatisticas.desenha_tela()
             escolha = estatisticas.getOpcaoEscolhida()
             if escolha != 4:
-                opcoes[escolha]()
+                plotado = opcoes[escolha]()
+                if not plotado:
+                    self.menu_inicial(estatisticas, hist)
             else:
                 opcoes[escolha](estatisticas, hist)
 
@@ -337,6 +440,8 @@ class CampoMinado:
             opcoes[escolha](estatisticas, hist)
         else:
             print(opcoes[escolha])
+            input("\nPressione enter para voltar para o menu inicial\n")
+            self.menu_inicial(estatisticas, hist)
 
     @staticmethod
     def getAtributos():

@@ -52,11 +52,16 @@ class Estatisticas(Tela):
 
         Saída: tuple, contendo as informações das casas apertas, casas marcadas e jogadas
         """
-        n_jogadas, qtd_casas_abertas, total_qtd_casas_abertas, qtd_casas_marcadas, total_qtd_casas_marcadas = self.hist.retorna_jogadas()
-        casas_abertas = np.array(total_qtd_casas_abertas)
-        casas_marcadas = np.array(total_qtd_casas_marcadas)
-        jogadas = np.array([i for i in range(1, n_jogadas + 1)])
-        return casas_abertas, casas_marcadas, jogadas
+
+        retorno = self.hist.retorna_jogadas()
+        if retorno:
+            n_jogadas, qtd_casas_abertas, total_qtd_casas_abertas, qtd_casas_marcadas, total_qtd_casas_marcadas = retorno
+            casas_abertas = np.array(total_qtd_casas_abertas)
+            casas_marcadas = np.array(total_qtd_casas_marcadas)
+            jogadas = np.array([i for i in range(1, n_jogadas + 1)])
+            return casas_abertas, casas_marcadas, jogadas
+        else:
+            return False
 
     # def carrega_estatisticas(self):
     #     """
@@ -79,19 +84,24 @@ class Estatisticas(Tela):
 
         Saída: Nenhuma
         """
-        casas_abertas, casas_marcadas, jogadas = self.retorna_estatisticas()
-        fig, ax = plt.subplots()
-        ax.plot(jogadas, casas_abertas)
-        ax.set_xticks(range(0, jogadas[-1] + 1))
-        ax.set_yticks(range(0, casas_abertas[-1] + 1))
-        plt.xlim(0, jogadas[-1] + 1)
-        plt.ylim(0, casas_abertas[-1] + 1)
-        ax.set_title("Casas abertas x Jogadas")
-        plt.xlabel("Jogada")
-        plt.ylabel("Quantidade de casas abertas")
-        plt.show()
-        Tela.limpaTela()
-        input("Aperte enter para continuar")
+        estatisticas = self.retorna_estatisticas()
+        plotato = False
+        if estatisticas:
+            casas_abertas, casas_marcadas, jogadas = estatisticas
+            fig, ax = plt.subplots()
+            ax.plot(jogadas, casas_abertas)
+            ax.set_xticks(range(0, jogadas[-1] + 1))
+            ax.set_yticks(range(0, casas_abertas[-1] + 1))
+            plt.xlim(0, jogadas[-1] + 1)
+            plt.ylim(0, casas_abertas[-1] + 1)
+            ax.set_title("Casas abertas x Jogadas")
+            plt.xlabel("Jogada")
+            plt.ylabel("Quantidade de casas abertas")
+            plt.show()
+            Tela.limpaTela()
+            plotato = True
+            input("Aperte enter para continuar")
+        return plotato
     
     def grafico_marcadas_jogadas(self):
         """
@@ -101,19 +111,24 @@ class Estatisticas(Tela):
 
         Saída: Nenhuma
         """
-        casas_abertas, casas_marcadas, jogadas = self.retorna_estatisticas()
-        fig, ax = plt.subplots()
-        ax.plot(jogadas, casas_marcadas)
-        ax.set_xticks(range(0, jogadas[-1] + 1))
-        ax.set_yticks(range(0, casas_marcadas[-1] + 1))
-        plt.xlim(0, jogadas[-1] + 1)
-        plt.ylim(0, casas_marcadas[-1] + 1)
-        ax.set_title("Casas marcadas x Jogadas")
-        plt.xlabel("Jogada")
-        plt.ylabel("Quantidade de casas marcadas")
-        plt.show()
-        Tela.limpaTela()
-        input("Aperte enter para continuar")
+        estatisticas = self.retorna_estatisticas()
+        plotato = False
+        if estatisticas:
+            casas_abertas, casas_marcadas, jogadas = estatisticas
+            fig, ax = plt.subplots()
+            ax.plot(jogadas, casas_marcadas)
+            ax.set_xticks(range(0, jogadas[-1] + 1))
+            ax.set_yticks(range(0, casas_marcadas[-1] + 1))
+            plt.xlim(0, jogadas[-1] + 1)
+            plt.ylim(0, casas_marcadas[-1] + 1)
+            ax.set_title("Casas marcadas x Jogadas")
+            plt.xlabel("Jogada")
+            plt.ylabel("Quantidade de casas marcadas")
+            plt.show()
+            Tela.limpaTela()
+            plotato = True
+            input("Aperte enter para continuar")
+        return plotato
     
     def grafico_abertas_marcadas(self):
         """
@@ -123,19 +138,24 @@ class Estatisticas(Tela):
 
         Saída: Nenhuma
         """
-        casas_abertas, casas_marcadas, jogadas = self.retorna_estatisticas()
-        fig, ax = plt.subplots()
-        ax.plot(casas_abertas, casas_marcadas)
-        ax.set_xticks(range(0, casas_abertas[-1] + 1))
-        ax.set_yticks(range(0, casas_marcadas[-1] + 1))
-        plt.xlim(0, casas_abertas[-1] + 1)
-        plt.ylim(0, casas_marcadas[-1] + 1)
-        ax.set_title("Casas marcadas x Casas abertas")
-        plt.xlabel("Quantidade de casas abertas")
-        plt.ylabel("Quantidade de casas marcadas")
-        plt.show()
-        Tela.limpaTela()
-        input("Aperte enter para continuar")
+        estatisticas = self.retorna_estatisticas()
+        plotato = False
+        if estatisticas:
+            casas_abertas, casas_marcadas, jogadas = estatisticas
+            fig, ax = plt.subplots()
+            ax.plot(casas_abertas, casas_marcadas)
+            ax.set_xticks(range(0, casas_abertas[-1] + 1))
+            ax.set_yticks(range(0, casas_marcadas[-1] + 1))
+            plt.xlim(0, casas_abertas[-1] + 1)
+            plt.ylim(0, casas_marcadas[-1] + 1)
+            ax.set_title("Casas marcadas x Casas abertas")
+            plt.xlabel("Quantidade de casas abertas")
+            plt.ylabel("Quantidade de casas marcadas")
+            plt.show()
+            Tela.limpaTela()
+            plotato = True
+            input("Aperte enter para continuar")
+        return plotato
 
         @staticmethod
         def getAtributos():
@@ -167,10 +187,10 @@ class Estatisticas(Tela):
             """
             manual = dict()
             manual["__init__"] = Estatisticas.__init__.__doc__
-            anual["retorna_estatisticas"] = Estatisticas.retorna_estatisticas.__doc__
-            anual["grafico_abertas_jogadas"] = Estatisticas.grafico_abertas_jogadas.__doc__
-            anual["grafico_marcadas_jogadas"] = Estatisticas.grafico_marcadas_jogadas.__doc__
-            anual["grafico_abertas_marcadas"] = Estatisticas.grafico_abertas_marcadas.__doc__
+            manual["retorna_estatisticas"] = Estatisticas.retorna_estatisticas.__doc__
+            manual["grafico_abertas_jogadas"] = Estatisticas.grafico_abertas_jogadas.__doc__
+            manual["grafico_marcadas_jogadas"] = Estatisticas.grafico_marcadas_jogadas.__doc__
+            manual["grafico_abertas_marcadas"] = Estatisticas.grafico_abertas_marcadas.__doc__
             manual["getManual"] = Estatisticas.getManual.__doc__
             manual["getAtributos"] = Estatisticas.getAtributos.__doc__
             manual["getMetodos"] = Estatisticas.getMetodos.__doc__

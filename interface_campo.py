@@ -177,10 +177,10 @@ class InterfaceCampo(Tela):
         """
         manual = dict()
         manual["__init__"] = InterfaceCampo.__init__.__doc__
-        anual["mostra_campo"] = InterfaceCampo.mostra_campo.__doc__
-        anual["pergunta_posicao"] = InterfaceCampo.pergunta_posicao.__doc__
-        anual["derrota"] = InterfaceCampo.derrota.__doc__
-        anual["vitoria"] = InterfaceCampo.vitoria.__doc__
+        manual["mostra_campo"] = InterfaceCampo.mostra_campo.__doc__
+        manual["pergunta_posicao"] = InterfaceCampo.pergunta_posicao.__doc__
+        manual["derrota"] = InterfaceCampo.derrota.__doc__
+        manual["vitoria"] = InterfaceCampo.vitoria.__doc__
         manual["getManual"] = InterfaceCampo.getManual.__doc__
         manual["getAtributos"] = InterfaceCampo.getAtributos.__doc__
         manual["getMetodos"] = InterfaceCampo.getMetodos.__doc__

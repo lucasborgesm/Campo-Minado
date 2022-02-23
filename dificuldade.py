@@ -66,7 +66,7 @@ class Dificuldade(Tela):
         """
         manual = dict()
         manual["__init__"] = Dificuldade.__init__.__doc__
-        anual["interpreta_dificuldade"] = Dificuldade.interpreta_dificuldade.__doc__
+        manual["interpreta_dificuldade"] = Dificuldade.interpreta_dificuldade.__doc__
         manual["getManual"] = Dificuldade.getManual.__doc__
         manual["getAtributos"] = Dificuldade.getAtributos.__doc__
         manual["getMetodos"] = Dificuldade.getMetodos.__doc__

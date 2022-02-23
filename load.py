@@ -50,9 +50,9 @@ class Load:
                 campo.append(linha_campo)
             arquivo.close()
             return tamanho, n_bombas, campo
-        except IndexError:
+        except FileNotFoundError:
             self.hist.armazena_log(f"{datetime.today()}\n"
-                                   f"        IndexError"
+                                   f"        FileNotFoundError"
                                    f"        Não existe nenhum jogo salvo."
                                    f"        O usuário foi levado novamente ao menu_principal")
             print("Não existe nenhum jogo salvo.\n")
