@@ -86,7 +86,8 @@ class InterfaceCampo(Tela):
             except ValueError:
                 self.hist.armazena_log(f"{datetime.today()}\n"
                                        f"        ValueError\n"
-                                       f"        A posição dada é inválida, digite um número entre 1 e {self.campo.getTamanho()}.\n"
+                                       f"        A posição dada é inválida, digite um número entre 1 e "
+                                       f"{self.campo.getTamanho()}.\n"
                                        f"        O usuário foi perguntado novamente sobre sua escolha\n")
                 print(f"A posição dada é inválida, digite um número entre 1 e {self.campo.getTamanho()}.\n")
 

@@ -30,7 +30,8 @@ class MenuEstatisticas(Tela):
     
     def grafico_abertas_jogadas_partida(self, estatisticas):
         """
-        Método responsável por criar o gráfico de casas abertas por jogadas, plotando as partidas salvas nas estatísticas
+        Método responsável por criar o gráfico de casas abertas por jogadas, plotando as partidas salvas nas
+        estatísticas
 
         Entrada: objeto da classe Estatisticas
 
@@ -63,7 +64,8 @@ class MenuEstatisticas(Tela):
     
     def grafico_marcadas_jogadas_partida(self, estatisticas):
         """
-        Método responsável por criar o gráfico de casas marcadas por jogadas, plotando as partidas salvas nas estatísticas
+        Método responsável por criar o gráfico de casas marcadas por jogadas, plotando as partidas salvas nas
+        estatísticas
 
         Entrada: objeto da classe Estatisticas
 
@@ -96,7 +98,8 @@ class MenuEstatisticas(Tela):
     
     def grafico_abertas_marcadas_partida(self, estatisticas):
         """
-        Método responsável por criar o gráfico de casas marcadas por casas abertas, plotando as partidas salvas nas estatísticas
+        Método responsável por criar o gráfico de casas marcadas por casas abertas, plotando as partidas salvas nas
+        estatísticas
 
         Entrada: objeto da classe Estatisticas
 

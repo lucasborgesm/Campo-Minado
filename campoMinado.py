@@ -291,9 +291,10 @@ class CampoMinado:
                     break
                 except PosicaoInvalida:
                     hist.armazena_log(f"{datetime.today()}\n"
-                                    f"        PosicaoInvalida\n"
-                                    f"        A posição dada é inválida, digite um número entre 1 e {campo.getTamanho()}.\n"
-                                    f"        O usuário foi perguntado novamente sobre sua escolha\n")
+                                      f"        PosicaoInvalida\n"
+                                      f"        A posição dada é inválida, digite um número entre 1 e"
+                                      f" {campo.getTamanho()}.\n"
+                                      f"        O usuário foi perguntado novamente sobre sua escolha\n")
                     print(f"A posição dada é inválida, digite um número entre 1 e {campo.getTamanho()}.\n")
             jogador.aumenta_jogadas(1)
             hist.armazena_jogada_hist("j", i, j)
@@ -437,7 +438,8 @@ class CampoMinado:
             campo = Campo(tamanho, n_bombas, hist, campo)
             pos_casas_abertas, pos_casas_marcadas = load.carrega_casas_abertas_e_marcadas(load.carrega_jogadas())
             save = Save(hist)
-            self.jogo(campo, jogador, estatisticas, hist, save, True, pos_casas_abertas, pos_casas_marcadas=pos_casas_marcadas)
+            self.jogo(campo, jogador, estatisticas, hist, save, True, pos_casas_abertas,
+                      pos_casas_marcadas=pos_casas_marcadas)
         else:
             self.menu_inicial(estatisticas, hist)
 
@@ -471,15 +473,16 @@ class CampoMinado:
                     break
                 except ValorTamanhoInvalido:
                     hist.armazena_log(f"{datetime.today()}\n"
-                                    f"        ValorTamanhoInvalido\n"
-                                    f"        Digite um número maior do que 1.\n"
-                                    f"        O usuário foi perguntado novamente sobre sua escolha\n")
+                                      f"        ValorTamanhoInvalido\n"
+                                      f"        Digite um número maior do que 1.\n"
+                                      f"        O usuário foi perguntado novamente sobre sua escolha\n")
                     print("\nDigite um número maior do que 1.\n")
                 except ValorNumeroDeBombasInvalido:
                     hist.armazena_log(f"{datetime.today()}\n"
-                                    f"        ValorNumeroDeBombasInvalido\n"
-                                    f"        Digite um número maior do que 0 e menor do que o tamanho do campo ao quadrado.\n"
-                                    f"        O usuário foi perguntado novamente sobre sua escolha\n")
+                                      f"        ValorNumeroDeBombasInvalido\n"
+                                      f"        Digite um número maior do que 0 e menor do que o tamanho do campo"
+                                      f" ao quadrado.\n"
+                                      f"        O usuário foi perguntado novamente sobre sua escolha\n")
                     print("\nDigite um número maior do que 0 e menor do que o tamanho do campo ao quadrado.\n")
         else:
             opcoes[escolha](estatisticas, hist)
@@ -492,7 +495,10 @@ class CampoMinado:
         Entrada: objeto da classe CampoMinado, objeto da classe Estatistica, objeto da classe Historico
         """
         menu_estatisticas = MenuEstatisticas(hist)
-        opcoes = {1: menu_estatisticas.grafico_abertas_jogadas_partida, 2: menu_estatisticas.grafico_marcadas_jogadas_partida, 3: menu_estatisticas.grafico_abertas_marcadas_partida, 4: self.menu_inicial}
+        opcoes = {1: menu_estatisticas.grafico_abertas_jogadas_partida,
+                  2: menu_estatisticas.grafico_marcadas_jogadas_partida,
+                  3: menu_estatisticas.grafico_abertas_marcadas_partida,
+                  4: self.menu_inicial}
         menu_estatisticas.desenha_tela()
         while True:
             try:

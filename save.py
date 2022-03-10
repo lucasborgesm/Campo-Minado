@@ -67,7 +67,8 @@ class Save:
             self.jogador_salvo = True
         nick = jogador.getNick()
         # nick = nick[: nick.find("\n")]
-        informacoes_jogador = f"{nick}\n{jogador.getJogadas()}\n{jogador.getCasasAbertas()}\n{jogador.getCasasAbertasTotal()}\n{jogador.getCasasMarcadas()}\n"
+        informacoes_jogador = f"{nick}\n{jogador.getJogadas()}\n{jogador.getCasasAbertas()}\n" \
+                              f"{jogador.getCasasAbertasTotal()}\n{jogador.getCasasMarcadas()}\n"
         arquivo_novo = open(self.save, "w")
         arquivo_novo.write(informacoes_jogador + dados)
         arquivo_novo.close()

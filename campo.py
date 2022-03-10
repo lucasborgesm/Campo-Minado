@@ -15,10 +15,10 @@ class Campo:
         Inicializador responsável por criar todas as variáveis necessárias para a criação e funcionamento do campo e
         mascara do jogo Campo Minado
 
-        Entrada: objeto da classe Campo, int, int, char, char, char, o primeiro representa o tamanho da matriz quadrada representando o campo
-        do jogo, o segundo a quantidade de bombas que serão colocadas, o terceiro o símbolo responsável por representar
-        as casas fechadas, o quarto o símbolo responsável por representar as bombas e o quinto o símbolo responsável
-        por representar as casas marcadas
+        Entrada: objeto da classe Campo, int, int, char, char, char, o primeiro representa o tamanho da matriz quadrada
+        representando o campo do jogo, o segundo a quantidade de bombas que serão colocadas, o terceiro o símbolo
+        responsável por representar as casas fechadas, o quarto o símbolo responsável por representar as bombas e o
+        quinto o símbolo responsável por representar as casas marcadas
 
         Saída: Nenhuma
         """
@@ -57,8 +57,8 @@ class Campo:
         """
         Esse método é responsável por abrir uma casa no jogo do Campo Minado
 
-        Entrada: objeto da classe Campo, int, int, o primeiro representando a coordenada das linhas e o segundo das colunas da casa que se
-        deseja abrir
+        Entrada: objeto da classe Campo, int, int, o primeiro representando a coordenada das linhas e o segundo das
+        colunas da casa que se deseja abrir
 
         Saída: Nenhuma
         """
@@ -83,8 +83,8 @@ class Campo:
         """
         Esse método é responsável por marcar uma casa no jogo do Campo minado
 
-        Entrada: objeto da classe Campo, int, int, o primeiro representando a coordenada das linhas e o segundo das colunas da casa que se
-        deseja marcar
+        Entrada: objeto da classe Campo, int, int, o primeiro representando a coordenada das linhas e o segundo das
+        colunas da casa que se deseja marcar
 
         Saída: bool, mostrando se a casa foi marcada ou não
         """

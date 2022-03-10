@@ -1,5 +1,4 @@
 import numpy as np
-from datetime import datetime
 from datetime import date
 from historico import *
 

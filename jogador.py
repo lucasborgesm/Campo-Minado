@@ -9,11 +9,13 @@ class Jogador:
                  "aumenta_jogadas", "aumenta_abertas", "aumenta_abertas_total", "aumenta_marcadas", "setNome",
                  "getAtributos", "getMetodos", "getManual"}
 
-    def __init__(self, nick="", jogadas=0, casas_abertas_jogador=0, casas_abertas_total=0, casas_marcadas=0, tempo_de_jogo=0):
+    def __init__(self, nick="", jogadas=0, casas_abertas_jogador=0, casas_abertas_total=0, casas_marcadas=0,
+                 tempo_de_jogo=0):
         """
         Inicializador responsável por criar as variáveis que armazenam os dados do jogador
 
-        Entrada: objeto da classe, Jogador, str, int, str, o primeiro representa o nome do jogador, o segundo o número de jogadas que ele fez até
+        Entrada: objeto da classe, Jogador, str, int, str, o primeiro representa o nome do jogador, o segundo o número
+         de jogadas que ele fez até
         o momento e o terceiro um texto mostrando o tempo total
 
         Saída: Nenhuma
