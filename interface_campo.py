@@ -1,4 +1,5 @@
 from tela import *
+from tkinter import *
 
 
 class InterfaceCampo(Tela):
@@ -83,13 +84,11 @@ class InterfaceCampo(Tela):
                     raise PosicaoInvalida
                 return i - 1, j - 1
             except ValueError:
-                self.hist.armazena_log(f"Value Error|Digite um número representando a posição, começando a contar de cima pra baixo e da esquerda para direita|"
-                                        f"{datetime.today()}\n")
-                print("Digite um número representando a posição, começando a contar de cima pra baixo e da esquerda para direita")
-            except PosicaoInvalida:
-                self.hist.armazena_log(f"PosicaoInvalida|A posição dada é inválida, digite um número entre 1 e {self.campo.getTamanho()}|"
-                                        f"{datetime.today()}\n")
-                print(f"A posição dada é inválida, digite um número entre 1 e {self.campo.getTamanho()}")
+                self.hist.armazena_log(f"{datetime.today()}\n"
+                                       f"        ValueError\n"
+                                       f"        A posição dada é inválida, digite um número entre 1 e {self.campo.getTamanho()}.\n"
+                                       f"        O usuário foi perguntado novamente sobre sua escolha\n")
+                print(f"A posição dada é inválida, digite um número entre 1 e {self.campo.getTamanho()}.\n")
 
     def derrota(self):
         """

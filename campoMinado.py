@@ -26,7 +26,8 @@ __email__ = "lucasborgesm@poli.ufrj.br"
 __status__ = "Production"
 
 
-from estatisticas import *
+from estatisticas import Estatisticas
+from menu_estatisticas import *
 from interface_usuario import *
 from ferramentas import *
 from menu_pause import *
@@ -42,25 +43,6 @@ from confirma_novo_jogo import *
 from save import *
 from jogada import *
 from load import *
-
-# from estatisticas import Estatisticas
-# from interface_usuario import *
-# from ferramentas import *
-# from menu_pause import MenuPause
-# from tela import *
-# from jogador import *
-# from campo import *
-# from menu_inicial import *
-# from opcoes import *
-# from historico import *
-# from interface_campo import *
-# from dificuldade import *
-# from confirma_novo_jogo import *
-# from save import *
-# from jogada import *
-# from menu_pause import *
-# from load import *
-# from estatisticas import *
 
 
 class CampoMinado:
@@ -108,6 +90,13 @@ class CampoMinado:
         saida += 'MANUAL DA CLASSE TELA\n'
         for chave in manual_tela:
             saida += f"{chave} : {manual_tela[chave]}\n"
+        saida += "\n"
+
+        # Manual da classe MenuEstatisticas
+        manual_menu_estatisticas = MenuEstatisticas.getManual()
+        saida += 'MANUAL DA CLASSE MENUESTATISTICAS\n'
+        for chave in manual_menu_estatisticas:
+            saida += f"{chave} : {manual_menu_estatisticas[chave]}\n"
         saida += "\n"
 
         # Manual da classe Estatisticas
@@ -263,12 +252,12 @@ class CampoMinado:
                 interface_campo.mostra_campo()
                 if situacao == "derrota":
                     interface_campo.derrota()
-                    # estatisticas.salva_estatisticas()
+                    estatisticas.salva_estatisticas()
                     save.apaga_save()
                     break
                 if situacao == "vitoria":
                     interface_campo.vitoria()
-                    # estatisticas.salva_estatisticas()
+                    estatisticas.salva_estatisticas()
                     save.apaga_save()
                     break
 
@@ -284,10 +273,28 @@ class CampoMinado:
         """
         opcoes = {1: campo.abre_casa, 2: campo.marca_casa}
         jogada.desenha_tela(False)
-        escolha = jogada.getOpcaoEscolhida()
+        while True:
+            try:
+                escolha = jogada.getOpcaoEscolhida()
+                break
+            except CommandError:
+                    hist.armazena_log(f"{datetime.today()}\n"
+                                      f"        CommandError\n"
+                                      f"        O comando digitado não faz parte das opções disponíveis.\n"
+                                      f"        O usuário foi perguntado novamente sobre sua escolha\n")
+                    print("O comando digitado não faz parte das opções disponíveis.\n")
         sair = False
         if escolha != 3:
-            i, j = interface_campo.pergunta_posicao()
+            while True:
+                try:
+                    i, j = interface_campo.pergunta_posicao()
+                    break
+                except PosicaoInvalida:
+                    hist.armazena_log(f"{datetime.today()}\n"
+                                    f"        PosicaoInvalida\n"
+                                    f"        A posição dada é inválida, digite um número entre 1 e {campo.getTamanho()}.\n"
+                                    f"        O usuário foi perguntado novamente sobre sua escolha\n")
+                    print(f"A posição dada é inválida, digite um número entre 1 e {campo.getTamanho()}.\n")
             jogador.aumenta_jogadas(1)
             hist.armazena_jogada_hist("j", i, j)
             if escolha == 1:
@@ -301,8 +308,17 @@ class CampoMinado:
             opcoes[escolha](i, j)
         else:
             menu_pause.desenha_tela()
-            if menu_pause.getOpcaoEscolhida() == 2:
-                sair = True
+            while True:
+                try:
+                    if menu_pause.getOpcaoEscolhida() == 2:
+                        sair = True
+                        break
+                except CommandError:
+                    hist.armazena_log(f"{datetime.today()}\n"
+                                      f"        CommandError\n"
+                                      f"        O comando digitado não faz parte das opções disponíveis.\n"
+                                      f"        O usuário foi perguntado novamente sobre sua escolha\n")
+                    print("O comando digitado não faz parte das opções disponíveis.\n")
         return sair
 
     def verifica_situacao(self, campo, hist):
@@ -319,16 +335,6 @@ class CampoMinado:
             situacao = campo.verifica_vitoria()
         return situacao
 
-    def calcula_tempo(self):
-        """
-        Esse método é responsável por contabilizar o tempo da partida realizada pelo jogador
-
-        Entrada: Nenhuma
-
-        Saída: Tempo total da partida atual
-        """
-        pass
-
     def menu_inicial(self, estatisticas, hist):
         """
         Método responsável por mostrar o menu inicial, tratar as interações com o usuário e redirecionar para o que for
@@ -340,10 +346,19 @@ class CampoMinado:
         """
         menu_inicial = MenuInicial(hist)
         menu_inicial.desenha_tela()
-        escolha = menu_inicial.getOpcaoEscolhida()
+        while True:
+            try:
+                escolha = menu_inicial.getOpcaoEscolhida()
+                break
+            except CommandError:
+                    hist.armazena_log(f"{datetime.today()}\n"
+                                      f"        CommandError\n"
+                                      f"        O comando digitado não faz parte das opções disponíveis.\n"
+                                      f"        O usuário foi perguntado novamente sobre sua escolha\n")
+                    print("O comando digitado não faz parte das opções disponíveis.\n")
         self.redireciona_menu_inicial(escolha, estatisticas, hist)
 
-    def novo_jogo(self, estatisticas, hist):
+    def novo_jogo(self, estatisticas, hist, tamanho=False, n_bombas=False):
         """
         Método responsável por criar um novo jogo, criando todos os objetos de classe necessários, também perguntando se
         o usuário tem certeza que deseja criar um novo jogo, já que isso resultará em apagar seu save anterior
@@ -354,7 +369,16 @@ class CampoMinado:
         """
         confirma_novo_jogo = ConfirmaNovoJogo(hist)
         confirma_novo_jogo.desenha_tela()
-        continua = confirma_novo_jogo.getOpcaoEscolhida()
+        while True:
+            try:
+                continua = confirma_novo_jogo.getOpcaoEscolhida()
+                break
+            except CommandError:
+                    hist.armazena_log(f"{datetime.today()}\n"
+                                      f"        CommandError\n"
+                                      f"        O comando digitado não faz parte das opções disponíveis.\n"
+                                      f"        O usuário foi perguntado novamente sobre sua escolha\n")
+                    print("O comando digitado não faz parte das opções disponíveis.\n")
         confirma_novo_jogo.limpaTela()
         if continua == 1:
             hist.reinicia_historico()
@@ -362,17 +386,29 @@ class CampoMinado:
             jogador = Jogador()
             jogador.setNome()
             hist.armazena_nome_jogador(jogador)
-            menu_dificuldades = Dificuldade(hist)
-            menu_dificuldades.desenha_tela()
-            escolha = menu_dificuldades.getOpcaoEscolhida()
-            tamanho, n_bombas = menu_dificuldades.interpreta_dificuldade(escolha)
-            campo = Campo(tamanho, n_bombas, hist)
+            if not tamanho:
+                menu_dificuldades = Dificuldade(hist)
+                menu_dificuldades.desenha_tela()
+                while True:
+                    try:
+                        escolha = menu_dificuldades.getOpcaoEscolhida()
+                        break
+                    except CommandError:
+                        hist.armazena_log(f"{datetime.today()}\n"
+                                        f"        CommandError\n"
+                                        f"        O comando digitado não faz parte das opções disponíveis.\n"
+                                        f"        O usuário foi perguntado novamente sobre sua escolha\n")
+                        print("O comando digitado não faz parte das opções disponíveis.\n")
+                tamanho, n_bombas = menu_dificuldades.interpreta_dificuldade(escolha)
+                campo = Campo(tamanho, n_bombas, hist)
+            else:
+                campo = Campo(tamanho, n_bombas, hist)
             save.salva_novo_jogo(campo)
             save.salva_jogador(jogador)
             Ferramentas.limpaTela()
             self.jogo(campo, jogador, estatisticas, hist, save)
         else:
-            self.menu_inicial(hist)
+            self.menu_inicial(estatisticas, hist)
 
     def carrega_jogo(self, estatisticas, hist):
         """
@@ -384,7 +420,16 @@ class CampoMinado:
         Saída: Nenhuma
         """
         load = Load(hist)
-        carregado = load.carrega_campo_inicial()
+        try:
+            carregado = load.carrega_campo_inicial()
+        except ArquivoVazio:
+            hist.armazena_log(f"{datetime.today()}\n"
+                              f"        ArquivoVazio"
+                              f"        O arquivo de save está vazio."
+                              f"        O usuário foi levado novamente ao menu_principal")
+            print("O arquivo de save está vazio.\n")
+            input("Pressione enter para continuar\n")
+            return False
         if carregado:
             tamanho, n_bombas, campo = carregado
             nick, jogadas, casas_abertas, casas_abertas_total, casas_marcadas = load.carrega_jogador()
@@ -406,8 +451,38 @@ class CampoMinado:
         Saída: Nenhuma
         """
         menu_opcoes = Opcoes(hist)
+        opcoes = {1: menu_opcoes.altera_dificuldades, 2: self.menu_inicial}
         menu_opcoes.desenha_tela()
-        escolha = menu_opcoes.getOpcaoEscolhida()
+        while True:
+            try:
+                escolha = menu_opcoes.getOpcaoEscolhida()
+                break
+            except CommandError:
+                hist.armazena_log(f"{datetime.today()}\n"
+                                  f"        CommandError\n"
+                                  f"        O comando digitado não faz parte das opções disponíveis.\n"
+                                  f"        O usuário foi perguntado novamente sobre sua escolha\n")
+            print("O comando digitado não faz parte das opções disponíveis.\n")
+        if escolha != 2:
+            while True:
+                try:
+                    tamanho, n_bombas = opcoes[escolha]()
+                    self.novo_jogo(estatisticas, hist, tamanho=tamanho, n_bombas=n_bombas)
+                    break
+                except ValorTamanhoInvalido:
+                    hist.armazena_log(f"{datetime.today()}\n"
+                                    f"        ValorTamanhoInvalido\n"
+                                    f"        Digite um número maior do que 1.\n"
+                                    f"        O usuário foi perguntado novamente sobre sua escolha\n")
+                    print("\nDigite um número maior do que 1.\n")
+                except ValorNumeroDeBombasInvalido:
+                    hist.armazena_log(f"{datetime.today()}\n"
+                                    f"        ValorNumeroDeBombasInvalido\n"
+                                    f"        Digite um número maior do que 0 e menor do que o tamanho do campo ao quadrado.\n"
+                                    f"        O usuário foi perguntado novamente sobre sua escolha\n")
+                    print("\nDigite um número maior do que 0 e menor do que o tamanho do campo ao quadrado.\n")
+        else:
+            opcoes[escolha](estatisticas, hist)
 
     def estatisticas(self, estatisticas, hist):
         """
@@ -416,16 +491,25 @@ class CampoMinado:
 
         Entrada: objeto da classe CampoMinado, objeto da classe Estatistica, objeto da classe Historico
         """
-        opcoes = {1: estatisticas.grafico_abertas_jogadas, 2: estatisticas.grafico_marcadas_jogadas, 3: estatisticas.grafico_abertas_marcadas, 4: self.menu_inicial}
+        menu_estatisticas = MenuEstatisticas(hist)
+        opcoes = {1: menu_estatisticas.grafico_abertas_jogadas_partida, 2: menu_estatisticas.grafico_marcadas_jogadas_partida, 3: menu_estatisticas.grafico_abertas_marcadas_partida, 4: self.menu_inicial}
+        menu_estatisticas.desenha_tela()
         while True:
-            estatisticas.desenha_tela()
-            escolha = estatisticas.getOpcaoEscolhida()
-            if escolha != 4:
-                plotado = opcoes[escolha]()
-                if not plotado:
-                    self.menu_inicial(estatisticas, hist)
-            else:
-                opcoes[escolha](estatisticas, hist)
+            try:
+                escolha = menu_estatisticas.getOpcaoEscolhida()
+                break
+            except CommandError:
+                    hist.armazena_log(f"{datetime.today()}\n"
+                                      f"        CommandError\n"
+                                      f"        O comando digitado não faz parte das opções disponíveis.\n"
+                                      f"        O usuário foi perguntado novamente sobre sua escolha\n")
+                    print("O comando digitado não faz parte das opções disponíveis.\n")
+        if escolha != 4:
+            plotado = opcoes[escolha](estatisticas)
+            if not plotado:
+                self.menu_inicial(estatisticas, hist)
+        else:
+            opcoes[escolha](estatisticas, hist)
 
     def redireciona_menu_inicial(self, escolha, estatisticas, hist):
         """
@@ -477,7 +561,6 @@ class CampoMinado:
         manual["jogo"] = CampoMinado.jogo.__doc__
         manual["jogada"] = CampoMinado.jogada.__doc__
         manual["verifica_situacao"] = CampoMinado.verifica_situacao.__doc__
-        manual["calcula_tempo"] = CampoMinado.calcula_tempo.__doc__
         manual["menu_inicial"] = CampoMinado.menu_inicial.__doc__
         manual["novo_jogo"] = CampoMinado.novo_jogo.__doc__
         manual["carrega_jogo"] = CampoMinado.carrega_jogo.__doc__

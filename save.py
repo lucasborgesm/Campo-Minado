@@ -10,7 +10,7 @@ class Save:
 
     def __init__(self, hist, jogador_salvo=True):
         """
-        Inicializador responsável por criar o arquivo necessário para o salvamento do jogo.
+        Inicializador responsável por criar o nome do arquivo necessário para o salvamento do jogo.
 
         Entrada: objeto da classe Save, objeto da classe Historico, bool (dizendo se o jogador já foi salvo
         anteriormente ou não, por padrão True)
@@ -66,7 +66,7 @@ class Save:
             dados = arquivo_antigo.read()
             self.jogador_salvo = True
         nick = jogador.getNick()
-        nick = nick[: nick.find("\n")]
+        # nick = nick[: nick.find("\n")]
         informacoes_jogador = f"{nick}\n{jogador.getJogadas()}\n{jogador.getCasasAbertas()}\n{jogador.getCasasAbertasTotal()}\n{jogador.getCasasMarcadas()}\n"
         arquivo_novo = open(self.save, "w")
         arquivo_novo.write(informacoes_jogador + dados)

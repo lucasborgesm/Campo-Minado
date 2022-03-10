@@ -75,12 +75,6 @@ class Tela(InterfaceUsuario):
                                        f"        Digite o número entre parênses da opção desejada.\n"
                                        f"        O usuário foi perguntado novamente sobre sua escolha\n")
                 print("Digite o número entre parênses da opção desejada.\n")
-            except CommandError:
-                self.hist.armazena_log(f"{datetime.today()}\n"
-                                       f"        CommandError\n"
-                                       f"        O comando digitado não faz parte das opções disponíveis.\n"
-                                       f"        O usuário foi perguntado novamente sobre sua escolha\n")
-                print("O comando digitado não faz parte das opções disponíveis.\n")
 
     @staticmethod
     def getAtributos():
@@ -124,4 +118,7 @@ class Tela(InterfaceUsuario):
 
 
 class CommandError(Exception):
+    """
+    Erro para quando o comando passado for inválido
+    """
     pass

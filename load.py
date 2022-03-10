@@ -13,11 +13,11 @@ class Load:
 
     def __init__(self, hist):
         """
-        Inicializador responsável por ler o arquivo necessário para carregar o jogo.
+        Inicializador responsável por criar o nome do arquivo necessário para carregar o jogo.
 
-        Entrada:
+        Entrada: objeto da classe Load, objeto da classe Historico
 
-        Saída:
+        Saída: Nenhuma
         """
         self.hist = hist
         self.load = "save.txt"
@@ -34,6 +34,9 @@ class Load:
         try:
             arquivo = open(self.load)
             linhas = arquivo.readlines()
+            n_linhas = len(linhas)
+            if n_linhas == 0:
+                raise ArquivoVazio
             tamanho = int(linhas[self.posicao_tamanho])
             n_bombas = 0
             campo_str = linhas[self.posicao_tamanho + 1: tamanho + self.posicao_tamanho + 1]
@@ -58,7 +61,6 @@ class Load:
             print("Não existe nenhum jogo salvo.\n")
             input("Pressione enter para continuar\n")
             return False
-
     
     def carrega_jogadas(self):
         """
@@ -154,3 +156,10 @@ class Load:
         manual["titulo"] = "# Representa o titulo da tela de jogada"
         manual["opcoes"] = "# Representa as opcoes da tela de jogada"
         return manual
+
+
+class ArquivoVazio(Exception):
+    """
+    Erro para quando o arquivo passado estiver vazio
+    """
+    pass

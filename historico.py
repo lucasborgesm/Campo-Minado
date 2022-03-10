@@ -1,5 +1,4 @@
 from datetime import datetime
-from logging import exception
 
 
 class Historico:
@@ -14,7 +13,7 @@ class Historico:
 
     def __init__(self):
         """
-        Inicializador responsável por criar os arquivos que irão armazenar os históricos
+        Inicializador responsável por criar o nome dos arquivos que irão armazenar os históricos
 
         Entrada: objeto da classe Historico
 
@@ -82,6 +81,7 @@ class Historico:
         arquivo = open(self.hist)
         linhas = arquivo.readlines()
         nome = linhas[0]
+        nome = nome[:-1]
         arquivo.close()
         return nome
 
@@ -96,9 +96,7 @@ class Historico:
         try:
             arquivo = open(self.hist)
             linhas = arquivo.readlines()
-            n_linhas = sum(linhas)
-            if n_linhas == 0:
-                raise ArquivoVazio
+            n_linhas = len(linhas)
             jogadas = linhas[1:]
             qtd_casas_abertas = 0
             total_qtd_casas_abertas = []
@@ -110,20 +108,14 @@ class Historico:
                     qtd_casas_abertas += 1
                 elif jogada[0] == "m":
                     qtd_casas_marcadas += 1
-                total_qtd_casas_abertas.append(qtd_casas_abertas)
-                total_qtd_casas_marcadas.append(qtd_casas_marcadas)
-                n_jogadas += 1
+                elif jogada[0] == "j":
+                    n_jogadas += 1
+                    total_qtd_casas_abertas.append(qtd_casas_abertas)
+                    total_qtd_casas_marcadas.append(qtd_casas_marcadas)
             return n_jogadas, qtd_casas_abertas, total_qtd_casas_abertas, qtd_casas_marcadas, total_qtd_casas_marcadas
         except FileNotFoundError:
             self.armazena_log(f"{datetime.today()}\n"
                                    f"        FileNotFoundError\n"
-                                   f"        Não houve nenhum jogo anterior para ver as estatíticas.\n"
-                                   f"        O usuário foi levado novamente ao menu_principal\n")
-            print("Não houve nenhum jogo anterior para ver as estatíticas.\n")
-            input("Pressione enter para continuar\n")
-        except ArquivoVazio:
-            self.armazena_log(f"{datetime.today()}\n"
-                                   f"        FileNotFoundError"
                                    f"        Não houve nenhum jogo anterior para ver as estatíticas.\n"
                                    f"        O usuário foi levado novamente ao menu_principal\n")
             print("Não houve nenhum jogo anterior para ver as estatíticas.\n")
@@ -172,10 +164,3 @@ class Historico:
         manual["hist"] = "# Representa o historico"
         manual["log"] = "# Representa o log"
         return manual
-    
-
-class ArquivoVazio(Exception):
-    """
-    Erro para quando o arquivo passado estiver vazio
-    """
-    pass
