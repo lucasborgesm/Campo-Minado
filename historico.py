@@ -93,34 +93,25 @@ class Historico:
 
         Saída: tuple, contendo as informações das jogadas, das casas abertas e das casas marcadas
         """
-        try:
-            arquivo = open(self.hist)
-            linhas = arquivo.readlines()
-            n_linhas = len(linhas)
-            jogadas = linhas[1:]
-            qtd_casas_abertas = 0
-            total_qtd_casas_abertas = []
-            qtd_casas_marcadas = 0
-            total_qtd_casas_marcadas = []
-            n_jogadas = 0
-            for jogada in jogadas:
-                if jogada[0] == "a":
-                    qtd_casas_abertas += 1
-                elif jogada[0] == "m":
-                    qtd_casas_marcadas += 1
-                elif jogada[0] == "j":
-                    n_jogadas += 1
-                    total_qtd_casas_abertas.append(qtd_casas_abertas)
-                    total_qtd_casas_marcadas.append(qtd_casas_marcadas)
-            return n_jogadas, qtd_casas_abertas, total_qtd_casas_abertas, qtd_casas_marcadas, total_qtd_casas_marcadas
-        except FileNotFoundError:
-            self.armazena_log(f"{datetime.today()}\n"
-                                   f"        FileNotFoundError\n"
-                                   f"        Não houve nenhum jogo anterior para ver as estatíticas.\n"
-                                   f"        O usuário foi levado novamente ao menu_principal\n")
-            print("Não houve nenhum jogo anterior para ver as estatíticas.\n")
-            input("Pressione enter para continuar\n")
-        return False
+        arquivo = open(self.hist)
+        linhas = arquivo.readlines()
+        n_linhas = len(linhas)
+        jogadas = linhas[1:]
+        qtd_casas_abertas = 0
+        total_qtd_casas_abertas = []
+        qtd_casas_marcadas = 0
+        total_qtd_casas_marcadas = []
+        n_jogadas = 0
+        for jogada in jogadas:
+            if jogada[0] == "a":
+                qtd_casas_abertas += 1
+            elif jogada[0] == "m":
+                qtd_casas_marcadas += 1
+            elif jogada[0] == "j":
+                n_jogadas += 1
+                total_qtd_casas_abertas.append(qtd_casas_abertas)
+                total_qtd_casas_marcadas.append(qtd_casas_marcadas)
+        return n_jogadas, qtd_casas_abertas, total_qtd_casas_abertas, qtd_casas_marcadas, total_qtd_casas_marcadas
 
     @staticmethod
     def getAtributos():

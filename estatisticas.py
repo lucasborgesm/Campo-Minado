@@ -53,15 +53,8 @@ class Estatisticas:
 
         Saída: array
         """
-        try:
-            stat = np.load(self.estatistica, allow_pickle=True)
-            return stat
-        except FileNotFoundError:
-            self.hist.armazena_log(f"{datetime.today()}\n"
-                                   f"        FileNotFoundError"
-                                   f"        Não existe nenhum arquivo de estatísticas."
-                                   f"        Nenhuma estatística antiga foi carregada.")
-            return np.array([False])
+        stat = np.load(self.estatistica, allow_pickle=True)
+        return stat
     
     @staticmethod
     def getAtributos():

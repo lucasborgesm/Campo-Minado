@@ -283,6 +283,12 @@ class CampoMinado:
                                       f"        O comando digitado não faz parte das opções disponíveis.\n"
                                       f"        O usuário foi perguntado novamente sobre sua escolha\n")
                     print("O comando digitado não faz parte das opções disponíveis.\n")
+            except ValueError:
+                hist.armazena_log(f"{datetime.today()}\n"
+                                  f"        ValueError\n"
+                                  f"        Digite o número entre parênses da opção desejada.\n"
+                                  f"        O usuário foi perguntado novamente sobre sua escolha\n")
+                print("Digite o número entre parênses da opção desejada.\n")
         sair = False
         if escolha != 3:
             while True:
@@ -296,6 +302,13 @@ class CampoMinado:
                                       f" {campo.getTamanho()}.\n"
                                       f"        O usuário foi perguntado novamente sobre sua escolha\n")
                     print(f"A posição dada é inválida, digite um número entre 1 e {campo.getTamanho()}.\n")
+                except ValueError:
+                    hist.armazena_log(f"{datetime.today()}\n"
+                                      f"        ValueError\n"
+                                      f"        A posição dada é inválida, digite um número entre 1 e "
+                                      f"{self.campo.getTamanho()}.\n"
+                                      f"        O usuário foi perguntado novamente sobre sua escolha\n")
+                    print(f"A posição dada é inválida, digite um número entre 1 e {self.campo.getTamanho()}.\n")
             jogador.aumenta_jogadas(1)
             hist.armazena_jogada_hist("j", i, j)
             if escolha == 1:
@@ -320,6 +333,12 @@ class CampoMinado:
                                       f"        O comando digitado não faz parte das opções disponíveis.\n"
                                       f"        O usuário foi perguntado novamente sobre sua escolha\n")
                     print("O comando digitado não faz parte das opções disponíveis.\n")
+                except ValueError:
+                    hist.armazena_log(f"{datetime.today()}\n"
+                                    f"        ValueError\n"
+                                    f"        Digite o número entre parênses da opção desejada.\n"
+                                    f"        O usuário foi perguntado novamente sobre sua escolha\n")
+                    print("Digite o número entre parênses da opção desejada.\n")
         return sair
 
     def verifica_situacao(self, campo, hist):
@@ -357,6 +376,12 @@ class CampoMinado:
                                       f"        O comando digitado não faz parte das opções disponíveis.\n"
                                       f"        O usuário foi perguntado novamente sobre sua escolha\n")
                     print("O comando digitado não faz parte das opções disponíveis.\n")
+            except ValueError:
+                    hist.armazena_log(f"{datetime.today()}\n"
+                                    f"        ValueError\n"
+                                    f"        Digite o número entre parênses da opção desejada.\n"
+                                    f"        O usuário foi perguntado novamente sobre sua escolha\n")
+                    print("Digite o número entre parênses da opção desejada.\n")
         self.redireciona_menu_inicial(escolha, estatisticas, hist)
 
     def novo_jogo(self, estatisticas, hist, tamanho=False, n_bombas=False):
@@ -380,6 +405,12 @@ class CampoMinado:
                                       f"        O comando digitado não faz parte das opções disponíveis.\n"
                                       f"        O usuário foi perguntado novamente sobre sua escolha\n")
                     print("O comando digitado não faz parte das opções disponíveis.\n")
+            except ValueError:
+                    hist.armazena_log(f"{datetime.today()}\n"
+                                    f"        ValueError\n"
+                                    f"        Digite o número entre parênses da opção desejada.\n"
+                                    f"        O usuário foi perguntado novamente sobre sua escolha\n")
+                    print("Digite o número entre parênses da opção desejada.\n")
         confirma_novo_jogo.limpaTela()
         if continua == 1:
             hist.reinicia_historico()
@@ -400,6 +431,12 @@ class CampoMinado:
                                         f"        O comando digitado não faz parte das opções disponíveis.\n"
                                         f"        O usuário foi perguntado novamente sobre sua escolha\n")
                         print("O comando digitado não faz parte das opções disponíveis.\n")
+                    except ValueError:
+                        hist.armazena_log(f"{datetime.today()}\n"
+                                        f"        ValueError\n"
+                                        f"        Digite o número entre parênses da opção desejada.\n"
+                                        f"        O usuário foi perguntado novamente sobre sua escolha\n")
+                        print("Digite o número entre parênses da opção desejada.\n")
                 tamanho, n_bombas = menu_dificuldades.interpreta_dificuldade(escolha)
                 campo = Campo(tamanho, n_bombas, hist)
             else:
@@ -430,7 +467,15 @@ class CampoMinado:
                               f"        O usuário foi levado novamente ao menu_principal")
             print("O arquivo de save está vazio.\n")
             input("Pressione enter para continuar\n")
-            return False
+            carregado = False
+        except FileNotFoundError:
+            hist.armazena_log(f"{datetime.today()}\n"
+                                   f"        FileNotFoundError"
+                                   f"        Não existe nenhum jogo salvo."
+                                   f"        O usuário foi levado novamente ao menu_principal")
+            print("Não existe nenhum jogo salvo.\n")
+            input("Pressione enter para continuar\n")
+            carregado = False
         if carregado:
             tamanho, n_bombas, campo = carregado
             nick, jogadas, casas_abertas, casas_abertas_total, casas_marcadas = load.carrega_jogador()
@@ -464,6 +509,12 @@ class CampoMinado:
                                   f"        CommandError\n"
                                   f"        O comando digitado não faz parte das opções disponíveis.\n"
                                   f"        O usuário foi perguntado novamente sobre sua escolha\n")
+            except ValueError:
+                    hist.armazena_log(f"{datetime.today()}\n"
+                                    f"        ValueError\n"
+                                    f"        Digite o número entre parênses da opção desejada.\n"
+                                    f"        O usuário foi perguntado novamente sobre sua escolha\n")
+                    print("Digite o número entre parênses da opção desejada.\n")
             print("O comando digitado não faz parte das opções disponíveis.\n")
         if escolha != 2:
             while True:
@@ -484,6 +535,12 @@ class CampoMinado:
                                       f" ao quadrado.\n"
                                       f"        O usuário foi perguntado novamente sobre sua escolha\n")
                     print("\nDigite um número maior do que 0 e menor do que o tamanho do campo ao quadrado.\n")
+                except ValueError:
+                    hist.armazena_log(f"{datetime.today()}\n"
+                                    f"        ValueError\n"
+                                    f"        Digite um número inteiro.\n"
+                                    f"        O usuário foi perguntado novamente sobre sua escolha\n")
+                    print("\nDigite um número inteiro.\n")
         else:
             opcoes[escolha](estatisticas, hist)
 
@@ -510,6 +567,12 @@ class CampoMinado:
                                       f"        O comando digitado não faz parte das opções disponíveis.\n"
                                       f"        O usuário foi perguntado novamente sobre sua escolha\n")
                     print("O comando digitado não faz parte das opções disponíveis.\n")
+            except ValueError:
+                    hist.armazena_log(f"{datetime.today()}\n"
+                                    f"        ValueError\n"
+                                    f"        Digite o número entre parênses da opção desejada.\n"
+                                    f"        O usuário foi perguntado novamente sobre sua escolha\n")
+                    print("Digite o número entre parênses da opção desejada.\n")
         if escolha != 4:
             plotado = opcoes[escolha](estatisticas)
             if not plotado:

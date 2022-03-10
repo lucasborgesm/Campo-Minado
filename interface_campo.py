@@ -74,23 +74,14 @@ class InterfaceCampo(Tela):
         Saída: tuple, com as coordenadas desejadas
         """
         print("\nDigite a posição da casa, primeiro a linha, depois a coluna")
-        while True:
-            try:
-                i = int(input("\nQual a linha?\n"))
-                if i > self.campo.getTamanho() or i < 1:
-                    raise PosicaoInvalida
-                j = int(input("\nQual a coluna?\n"))
-                if j > self.campo.getTamanho() or j < 1:
-                    raise PosicaoInvalida
-                return i - 1, j - 1
-            except ValueError:
-                self.hist.armazena_log(f"{datetime.today()}\n"
-                                       f"        ValueError\n"
-                                       f"        A posição dada é inválida, digite um número entre 1 e "
-                                       f"{self.campo.getTamanho()}.\n"
-                                       f"        O usuário foi perguntado novamente sobre sua escolha\n")
-                print(f"A posição dada é inválida, digite um número entre 1 e {self.campo.getTamanho()}.\n")
-
+        i = int(input("\nQual a linha?\n"))
+        if i > self.campo.getTamanho() or i < 1:
+            raise PosicaoInvalida
+        j = int(input("\nQual a coluna?\n"))
+        if j > self.campo.getTamanho() or j < 1:
+            raise PosicaoInvalida
+        return i - 1, j - 1
+            
     def derrota(self):
         """
         Método responsável pela mensagem de derrota

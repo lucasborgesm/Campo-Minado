@@ -37,7 +37,14 @@ class MenuEstatisticas(Tela):
 
         Saída: bool, representando se o gráfico foi plotado ou não
         """
-        estatisticas = estatisticas.carrega_estatisticas()
+        try:
+            estatisticas = estatisticas.carrega_estatisticas()
+        except FileNotFoundError:
+            self.hist.armazena_log(f"{datetime.today()}\n"
+                                   f"        FileNotFoundError"
+                                   f"        Não existe nenhum arquivo de estatísticas."
+                                   f"        Nenhuma estatística antiga foi carregada.")
+            estatisticas = np.array([False])
         plotato = False
         if estatisticas.any():
             fig, ax = plt.subplots()
@@ -71,7 +78,14 @@ class MenuEstatisticas(Tela):
 
         Saída: bool, representando se o gráfico foi plotado ou não
         """
-        estatisticas = estatisticas.carrega_estatisticas()
+        try:
+            estatisticas = estatisticas.carrega_estatisticas()
+        except FileNotFoundError:
+            self.hist.armazena_log(f"{datetime.today()}\n"
+                                   f"        FileNotFoundError"
+                                   f"        Não existe nenhum arquivo de estatísticas."
+                                   f"        Nenhuma estatística antiga foi carregada.")
+            estatisticas = np.array([False])
         plotato = False
         if estatisticas.any():
             fig, ax = plt.subplots()
@@ -105,7 +119,14 @@ class MenuEstatisticas(Tela):
 
         Saída: bool, representando se o gráfico foi plotado ou não
         """
-        estatisticas = estatisticas.carrega_estatisticas()
+        try:
+            estatisticas = estatisticas.carrega_estatisticas()
+        except FileNotFoundError:
+            self.hist.armazena_log(f"{datetime.today()}\n"
+                                   f"        FileNotFoundError"
+                                   f"        Não existe nenhum arquivo de estatísticas."
+                                   f"        Nenhuma estatística antiga foi carregada.")
+            estatisticas = np.array([False])
         plotato = False
         if estatisticas.any():
             fig, ax = plt.subplots()

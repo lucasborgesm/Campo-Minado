@@ -31,36 +31,27 @@ class Load:
 
         Saída: tuple, contendo o tamanho, o número de bombas e o campo
         """
-        try:
-            arquivo = open(self.load)
-            linhas = arquivo.readlines()
-            n_linhas = len(linhas)
-            if n_linhas == 0:
-                raise ArquivoVazio
-            tamanho = int(linhas[self.posicao_tamanho])
-            n_bombas = 0
-            campo_str = linhas[self.posicao_tamanho + 1: tamanho + self.posicao_tamanho + 1]
-            campo = []
-            for linha in campo_str:
-                linha_campo = []
-                for i in range(tamanho):
-                    aij = linha[i]
-                    if aij == "b":
-                        linha_campo.append(aij)
-                        n_bombas += 1
-                    else:
-                        linha_campo.append(int(aij))
-                campo.append(linha_campo)
-            arquivo.close()
-            return tamanho, n_bombas, campo
-        except FileNotFoundError:
-            self.hist.armazena_log(f"{datetime.today()}\n"
-                                   f"        FileNotFoundError"
-                                   f"        Não existe nenhum jogo salvo."
-                                   f"        O usuário foi levado novamente ao menu_principal")
-            print("Não existe nenhum jogo salvo.\n")
-            input("Pressione enter para continuar\n")
-            return False
+        arquivo = open(self.load)
+        linhas = arquivo.readlines()
+        n_linhas = len(linhas)
+        if n_linhas == 0:
+            raise ArquivoVazio
+        tamanho = int(linhas[self.posicao_tamanho])
+        n_bombas = 0
+        campo_str = linhas[self.posicao_tamanho + 1: tamanho + self.posicao_tamanho + 1]
+        campo = []
+        for linha in campo_str:
+            linha_campo = []
+            for i in range(tamanho):
+                aij = linha[i]
+                if aij == "b":
+                    linha_campo.append(aij)
+                    n_bombas += 1
+                else:
+                    linha_campo.append(int(aij))
+            campo.append(linha_campo)
+        arquivo.close()
+        return tamanho, n_bombas, campo
     
     def carrega_jogadas(self):
         """

@@ -62,19 +62,12 @@ class Tela(InterfaceUsuario):
 
         Saída: int, representando a opção escolhida na tela pelo usuário
         """
-        while True:
-            try:
-                escolha = int(input())
-                if escolha in range(len(self.opcoes) + 1):
-                    return escolha
-                else:
-                    raise CommandError
-            except ValueError:
-                self.hist.armazena_log(f"{datetime.today()}\n"
-                                       f"        ValueError\n"
-                                       f"        Digite o número entre parênses da opção desejada.\n"
-                                       f"        O usuário foi perguntado novamente sobre sua escolha\n")
-                print("Digite o número entre parênses da opção desejada.\n")
+        escolha = int(input())
+        if escolha in range(len(self.opcoes) + 1):
+            return escolha
+        else:
+            raise CommandError
+            
 
     @staticmethod
     def getAtributos():
